@@ -1,4 +1,4 @@
-const { User, HasFamiliyUser, Activity, Review } = require("./models");
+const { User, HasFamiliyUser, Activity, Review, ActivityImage } = require("./models");
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
 
@@ -21,7 +21,13 @@ const resolvers = {
             throw new Error("Sorry, you're not an authenticated user!");
         },
         async activities(_, args, { user }) {
-            return Activity.findAll({ include: 'reviewList' })
+            return Activity.findAll({ include: ['reviewList', 'activityImageList'] })
+        },
+        async activity(_, args, { user }) {
+            console.log(args)
+            const activity = await Activity.findOne({where: {id: args.id}, include: ['reviewList', 'activityImageList'] })
+            console.log(activity)
+            return activity
         },
         async myReviews(_, args, { user }) {
             return Review.findAll({ where: { userId: user.id } })
@@ -38,9 +44,10 @@ const resolvers = {
             timingMax,
             description,
             url,
+            activityImageList
         }
         }, { user }) {
-            return Activity.create({
+            const activity =  await Activity.create({
                 userId: user.id,
                 category,
                 name,
@@ -50,7 +57,17 @@ const resolvers = {
                 timingMax,
                 description,
                 url
-            })
+            });
+
+            const images = await Promise.all(activityImageList.map((i, index) => ActivityImage.create({
+                activityId: activity.id,
+                url: i.url,
+                isMain: index === 0
+            })));
+
+            activity.activityImageList = images;
+
+            return activity;
         },
         async createReview(_, {
             reviewInput: {
@@ -76,7 +93,7 @@ const resolvers = {
             gender,
             email,
             type,
-            toddlerList
+            toddlerList = []
         }) {
             console.log(toddlerList)
             const user = await User.create({

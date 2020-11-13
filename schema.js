@@ -45,6 +45,7 @@ const typeDefs = gql`
         timingMax: Int!
         description: String!
         url: String
+        activityImageList: [ActivityImageInput]
     }
 
     enum ActivityCategory {
@@ -67,6 +68,7 @@ const typeDefs = gql`
         description: String!
         url: String
         reviewList: [Review]
+        activityImageList: [ActivityImage]
     }
 
     input ReviewInput {
@@ -83,9 +85,22 @@ const typeDefs = gql`
         text: String
     }
 
+    input ActivityImageInput {
+        url: String!
+        isMain: Boolean
+    }
+
+    type ActivityImage {
+        id: Int!
+        activityId: Int!
+        url: String!
+        isMain: Boolean
+    }
+
     type Query {
         current: User
         activities: [Activity]
+        activity(id: Int!): Activity
         myReviews: [Review]
     }
 
