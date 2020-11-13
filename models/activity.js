@@ -17,8 +17,22 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Activity.init({
-    userId: DataTypes.INTEGER,
-    name: DataTypes.STRING
+    userId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    category: {
+      type: DataTypes.ENUM,
+      values: ['PHYSICAL', 'COGNITIVE', 'SPEECH', 'SOCIAL_EMOTION', 'SELF_CARE']
+    },
+    name: DataTypes.STRING,
+    ageMin: DataTypes.INTEGER,
+    ageMax: DataTypes.INTEGER,
+    timingMin: DataTypes.INTEGER,
+    timingMax: DataTypes.INTEGER,
+    description: DataTypes.TEXT,
+    url: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'Activity',

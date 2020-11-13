@@ -13,11 +13,42 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Activity, {
         foreignKey: 'userId',
       })
+      /* User.belongsToMany(models.HasFamiliyUser, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE'
+      })
+      User.belongsToMany(models.HasFamiliyUser, {
+        foreignKey: 'familymemberid',
+        onDelete: 'CASCADE'
+      }) */
     }
   };
   User.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     login: DataTypes.STRING,
-    password: DataTypes.STRING
+    photo: DataTypes.STRING,
+    name: DataTypes.STRING,
+    birthDate: DataTypes.DATE,
+    gender: {
+      type: DataTypes.ENUM,
+      values: ['MALE',
+        'FEMALE',
+        'UNSPECIFIED']
+    },
+    type: {
+      type: DataTypes.ENUM,
+      values: [
+        'TODDLER',
+        'USER',
+      ]
+    },
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
+    type: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'User'
