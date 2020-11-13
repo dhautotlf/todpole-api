@@ -1,0 +1,9 @@
+- unicity on login 
+- remove email in the user db 
+- add the bookmark for an activity
+- update user 
+- add filters to get the 
+- dockerfile + deploy this on EC2/Heroku
+- modularity of the graphql files
+- create seeders 
+- 
