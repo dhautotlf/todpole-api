@@ -14,8 +14,17 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         onDelete: 'CASCADE'
       })
+      Activity.hasMany(models.Review, {
+        foreignKey: 'activityId',
+        as: 'reviewList'
+      })
+      Activity.hasMany(models.ActivityImage, {
+        foreignKey: 'activityId',
+        as: 'activityImageList'
+      })
     }
   };
+  
   Activity.init({
     id: {
       type: DataTypes.INTEGER,

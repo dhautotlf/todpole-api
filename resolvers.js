@@ -1,8 +1,9 @@
-const { User, HasFamiliyUser, Activity } = require("./models");
+const { User, HasFamiliyUser, Activity, Review } = require("./models");
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
 
 const JWT_SECRET = require("./constants");
+const review = require("./models/review");
 
 const resolvers = {
     Query: {
@@ -19,13 +20,16 @@ const resolvers = {
             }
             throw new Error("Sorry, you're not an authenticated user!");
         },
-        async activities(_, args, {user}) {
-            return Activity.findAll()
+        async activities(_, args, { user }) {
+            return Activity.findAll({ include: 'reviewList' })
+        },
+        async myReviews(_, args, { user }) {
+            return Review.findAll({ where: { userId: user.id } })
         }
     },
 
     Mutation: {
-        async createActivity(_, {
+        async createActivity(_, { activityInput: {
             category,
             name,
             ageMin,
@@ -34,8 +38,8 @@ const resolvers = {
             timingMax,
             description,
             url,
+        }
         }, { user }) {
-            console.log(user)
             return Activity.create({
                 userId: user.id,
                 category,
@@ -45,10 +49,24 @@ const resolvers = {
                 timingMin,
                 timingMax,
                 description,
-                url  
+                url
             })
         },
-
+        async createReview(_, {
+            reviewInput: {
+                activityId,
+                rating,
+                text,
+            }
+        }, { user }) {
+            console.log(user.id)
+            return Review.create({
+                userId: user.id,
+                activityId,
+                rating,
+                text
+            })
+        },
         async register(_, {
             login,
             password,
