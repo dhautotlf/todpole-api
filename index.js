@@ -16,6 +16,8 @@ app.use(auth);
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    introspection: true,
+    playground: true,
     playground: {
         endpoint: "/graphql",
     },

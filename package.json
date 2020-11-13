@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "migrate-up": "sequelize db:migrate",
-    "migrate-undo": "sequelize db:migrate:undo"
+    "migrate-undo": "sequelize db:migrate:undo",
+    "heroku-postbuild": "sequelize db:migrate"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.5.0",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0"
   }
 }

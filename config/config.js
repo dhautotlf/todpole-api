@@ -9,13 +9,12 @@ module.exports = {
       "quoteIdentifiers": false
     },
     "production": {
-      "username": process.env.DB_USERNAME,
-      "password": process.env.DB_PASSWORD,
-      "database": "postgres",
-      "host": "todpole.cl6rtglnu4jq.eu-west-1.rds.amazonaws.com",
-      "port": 54320,
+      "username": process.env.DATABASE_USERNAME,
+      "password": process.env.DATABASE_PASSWORD,
+      "database": process.env.DATABASE_NAME,
+      "host": process.env.DATABASE_URL1,
+      "port": 5432,
       "dialect": "postgres",
       "quoteIdentifiers": false
     }
   }
-  
