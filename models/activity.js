@@ -17,10 +17,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Activity.init({
-    userId: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
     },
     category: {
       type: DataTypes.ENUM,
