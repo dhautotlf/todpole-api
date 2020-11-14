@@ -1,5 +1,0 @@
-- Create repo 
-- Add eslint
-- Create schema and migration files 
-- Create resolvers
-- Expose mocked API through NGORK

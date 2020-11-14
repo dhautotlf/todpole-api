@@ -22,9 +22,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'activityId',
         as: 'activityImageList'
       })
+      Activity.hasMany(models.Bookmark, {
+        foreignKey: 'userId',
+      })
     }
   };
-  
+
   Activity.init({
     id: {
       type: DataTypes.INTEGER,

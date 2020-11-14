@@ -1,4 +1,4 @@
-const { User, HasFamiliyUser, Activity, Review, ActivityImage } = require("./models");
+const { User, HasFamiliyUser, Activity, Review, ActivityImage, Bookmark } = require("./models");
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
 
@@ -11,10 +11,11 @@ const resolvers = {
             if (user) {
                 // Get toddlers
                 const toddlers = await HasFamiliyUser.findAll({ where: { userId: user.id }, include: [User] })
-
+                const bookmarks = await Bookmark.findAll({ where: { userId: user.id }, include: ['activity'] })
+                console.log(bookmarks)
                 const foundUser = await User.findOne({ where: { id: user.id } })
-                console.log(foundUser)
                 foundUser.toddlerList = toddlers.map(t => t.User);
+                foundUser.bookmarkList = bookmarks.map(t => t.activity);
 
                 return foundUser;
             }
@@ -24,13 +25,15 @@ const resolvers = {
             return Activity.findAll({ include: ['reviewList', 'activityImageList'] })
         },
         async activity(_, args, { user }) {
-            console.log(args)
-            const activity = await Activity.findOne({where: {id: args.id}, include: ['reviewList', 'activityImageList'] })
+            const activity = await Activity.findOne({ where: { id: args.id }, include: ['reviewList', 'activityImageList'] })
             console.log(activity)
             return activity
         },
         async myReviews(_, args, { user }) {
             return Review.findAll({ where: { userId: user.id } })
+        },
+        async myBookmarks(_, args, { user }) {
+            return Bookmark.findAll({ where: { userId: user.id } , include: ['activity']})
         }
     },
 
@@ -47,7 +50,7 @@ const resolvers = {
             activityImageList
         }
         }, { user }) {
-            const activity =  await Activity.create({
+            const activity = await Activity.create({
                 userId: user.id,
                 category,
                 name,
@@ -76,13 +79,24 @@ const resolvers = {
                 text,
             }
         }, { user }) {
-            console.log(user.id)
             return Review.create({
                 userId: user.id,
                 activityId,
                 rating,
                 text
             })
+        },
+        async createBookmark(_, {
+            bookmarkInput: {
+                activityId,
+            }
+        }, { user }) {
+            const created = await Bookmark.create({
+                userId: user.id,
+                activityId,
+            });
+
+            return Bookmark.findOne({ where: { id: created.id } , include: ['activity']})
         },
         async register(_, {
             login,
@@ -91,11 +105,9 @@ const resolvers = {
             name,
             birthDate,
             gender,
-            email,
             type,
             toddlerList = []
         }) {
-            console.log(toddlerList)
             const user = await User.create({
                 login,
                 password: await bcrypt.hash(password, 10),
@@ -103,20 +115,16 @@ const resolvers = {
                 name,
                 birthDate,
                 gender,
-                email,
                 type,
             });
 
             const results = await Promise.all(toddlerList.map((user) => User.create({ ...user, type: 'TODDLER' })))
-            console.log(results.map(r => r.id))
-
             const linkResults = await Promise.all(results.map(r => r.id).map(i => {
-                console.log(user.id, i)
                 return HasFamiliyUser.create({
                     userId: user.id,
                     familiyMemberId: i
                 })
-            }))
+            }));
 
             return jsonwebtoken.sign({ id: user.id, login: user.login }, JWT_SECRET, {
                 expiresIn: "1d",

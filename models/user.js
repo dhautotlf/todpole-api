@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Activity, {
         foreignKey: 'userId',
       })
+      User.hasMany(models.Bookmark, {
+        foreignKey: 'userId',
+      })
       /* User.belongsToMany(models.HasFamiliyUser, {
         foreignKey: 'userId',
         onDelete: 'CASCADE'
@@ -46,7 +49,6 @@ module.exports = (sequelize, DataTypes) => {
         'USER',
       ]
     },
-    email: DataTypes.STRING,
     password: DataTypes.STRING,
     type: DataTypes.STRING,
   }, {

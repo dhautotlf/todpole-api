@@ -1,107 +1,17 @@
 const { gql } = require("apollo-server-express");
+const User = require('./typedefs/user');
+const Activity = require('./typedefs/activity');
+const Review = require('./typedefs/review');
+const ActivityImage = require('./typedefs/activityImage');
+const Bookmark = require('./typedefs/bookmark');
 
 const typeDefs = gql`
-    enum Gender {
-        MALE
-        FEMALE
-        UNSPECIFIED
-    }
-    
-    enum UserType {
-        TODDLER
-        USER
-    }
-
-    input UserInput {
-        login: String
-        photo: String
-        name: String
-        birthDate: String
-        gender: Gender
-        email: String
-        password: String
-        type: String
-    }
-
-    type User {
-        id: Int!
-        login: String
-        photo: String
-        name: String
-        birthDate: String
-        gender: Gender
-        email: String
-        password: String
-        type: String
-        toddlerList: [User]
-    }
-
-    input ActivityInput {
-        category: ActivityCategory!
-        name: String!
-        ageMin: Int!
-        ageMax: Int!
-        timingMin: Int!
-        timingMax: Int!
-        description: String!
-        url: String
-        activityImageList: [ActivityImageInput]
-    }
-
-    enum ActivityCategory {
-        PHYSICAL
-        COGNITIVE
-        SPEECH
-        SOCIAL_EMOTION
-        SELF_CARE
-    }
-
-    type Activity {
-        id: Int!
-        userId: Int!
-        category: ActivityCategory!
-        name: String!
-        ageMin: Int!
-        ageMax: Int!
-        timingMin: Int!
-        timingMax: Int!
-        description: String!
-        url: String
-        reviewList: [Review]
-        activityImageList: [ActivityImage]
-    }
-
-    input ReviewInput {
-        activityId: Int!
-        rating: Int!
-        text: String
-    }
-
-    type Review {
-        id: Int!
-        userId: Int!
-        activityId: Int!
-        rating: Int!
-        text: String
-    }
-
-    input ActivityImageInput {
-        url: String!
-        isMain: Boolean
-    }
-
-    type ActivityImage {
-        id: Int!
-        activityId: Int!
-        url: String!
-        isMain: Boolean
-    }
-
     type Query {
-        current: User
+        current: User   
         activities: [Activity]
         activity(id: Int!): Activity
         myReviews: [Review]
+        myBookmarks: [Bookmark]
     }
 
     type Mutation {
@@ -109,7 +19,8 @@ const typeDefs = gql`
         login(login: String!, password: String!): String
         createActivity(activityInput: ActivityInput!): Activity
         createReview(reviewInput: ReviewInput!): Review
+        createBookmark(bookmarkInput: BookmarkInput!): Bookmark
     }
 `;
 
-module.exports = typeDefs;
+module.exports = [typeDefs, User, Activity, Review, ActivityImage, Bookmark];
