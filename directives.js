@@ -2,9 +2,8 @@ const { AuthenticationError, SchemaDirectiveVisitor } = require('apollo-server-e
 const { defaultFieldResolver } = require('graphql');
 
 const assertOwner = (user, dbUser) => {
-    console.log('*******')
-    console.log(dbUser)
-    if (user.id !== dbUser.dataValues.id) {
+    // We want to check the access when trying to get 'USER' type only
+    if (dbUser.dataValues.type !== 'TODDLER' && user.id !== dbUser.dataValues.id) {
         throw new AuthenticationError('You do not have the right to access this field');
     }
 }
