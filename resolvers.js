@@ -1,9 +1,10 @@
-const { User, HasFamiliyUser, Activity, Review, ActivityImage, Bookmark } = require("./models");
+const { User, HasFamiliyUser, Activity, Review, ActivityImage, Bookmark, Tag, ActivityTag } = require("./models");
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
 
 const JWT_SECRET = require("./constants");
 const review = require("./models/review");
+const tag = require("./models/tag");
 
 const resolvers = {
     Query: {
@@ -12,7 +13,6 @@ const resolvers = {
                 // Get toddlers
                 const toddlers = await HasFamiliyUser.findAll({ where: { userId: user.id }, include: [User] })
                 const bookmarks = await Bookmark.findAll({ where: { userId: user.id }, include: ['activity'] })
-                console.log(bookmarks)
                 const foundUser = await User.findOne({ where: { id: user.id } })
                 foundUser.toddlerList = toddlers.map(t => t.User);
                 foundUser.bookmarkList = bookmarks.map(t => t.activity);
@@ -22,19 +22,21 @@ const resolvers = {
             throw new Error("Sorry, you're not an authenticated user!");
         },
         async activities(_, args, { user }) {
-            return Activity.findAll({ include: ['reviewList', 'activityImageList'] })
+            if (!user) {
+                throw new Error("Sorry, you're not an authenticated user!");
+            }
+
+            return Activity.findAll({ include: ['reviewList', 'activityImageList', 'tagList'] })
         },
         async activity(_, args, { user }) {
-            const activity = await Activity.findOne({ where: { id: args.id }, include: ['reviewList', 'activityImageList'] })
-            console.log(activity)
+            const activity = await Activity.findOne({ where: { id: args.id }, include: ['reviewList', 'activityImageList', 'tagList', 'user'] })
             return activity
         },
         async myReviews(_, args, { user }) {
             return Review.findAll({ where: { userId: user.id } })
         },
-        async myBookmarks(_, args, { user }) {
-            return Bookmark.findAll({ where: { userId: user.id } , include: ['activity']})
-        }
+        myBookmarks: async (_, args, { user }) =>
+            Bookmark.findAll({ where: { userId: user.id }, include: ['activity'] })
     },
 
     Mutation: {
@@ -47,7 +49,8 @@ const resolvers = {
             timingMax,
             description,
             url,
-            activityImageList
+            activityImageList,
+            tagList
         }
         }, { user }) {
             const activity = await Activity.create({
@@ -68,7 +71,24 @@ const resolvers = {
                 isMain: index === 0
             })));
 
+            const tags = await Promise.all(tagList.map(t => Tag. findCreateFind(
+                {
+                    where: { text: t.text }
+                })));
+
+            await Promise.all(tags.map(t => {
+                ActivityTag. findCreateFind(
+                    {
+                        where: {
+                            ActivityId: activity.id,
+                            TagId: t[0].dataValues.id
+                        }
+                    })
+            }));
+
             activity.activityImageList = images;
+            activity.tagList = tagList;
+
 
             return activity;
         },
@@ -96,7 +116,7 @@ const resolvers = {
                 activityId,
             });
 
-            return Bookmark.findOne({ where: { id: created.id } , include: ['activity']})
+            return Bookmark.findOne({ where: { id: created.id }, include: ['activity'] })
         },
         async register(_, {
             login,

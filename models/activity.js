@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Activity.belongsTo(models.User, {
         foreignKey: 'userId',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        as: 'user',
       })
       Activity.hasMany(models.Review, {
         foreignKey: 'activityId',
@@ -25,6 +26,13 @@ module.exports = (sequelize, DataTypes) => {
       Activity.hasMany(models.Bookmark, {
         foreignKey: 'userId',
       })
+      Activity.belongsToMany(
+        models.Tag,
+        {
+          through: models.ActivityTag,
+          as:'tagList'
+        }
+      )
     }
   };
 

@@ -1,4 +1,6 @@
 const typeDef = `
+directive @checkOwner on FIELD | FIELD_DEFINITION
+
 enum Gender {
     MALE
     FEMALE
@@ -22,15 +24,15 @@ input UserInput {
 
 type User {
     id: Int!
-    login: String
+    login: String @checkOwner
     photo: String
     name: String
-    birthDate: String
-    gender: Gender
-    password: String
-    type: String
-    toddlerList: [User]
-    bookmarkList: [Activity]
+    birthDate: String @checkOwner
+    gender: Gender @checkOwner
+    password: String @checkOwner
+    type: String @checkOwner
+    toddlerList: [User] @checkOwner
+    bookmarkList: [Activity] @checkOwner
 }
 `;
 

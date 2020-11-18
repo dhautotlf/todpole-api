@@ -4,6 +4,7 @@ const Activity = require('./typedefs/activity');
 const Review = require('./typedefs/review');
 const ActivityImage = require('./typedefs/activityImage');
 const Bookmark = require('./typedefs/bookmark');
+const Tag = require('./typedefs/tag');
 
 const typeDefs = gql`
     type Query {
@@ -23,4 +24,4 @@ const typeDefs = gql`
     }
 `;
 
-module.exports = [typeDefs, User, Activity, Review, ActivityImage, Bookmark];
+module.exports = [typeDefs, User, Activity, Review, ActivityImage, Bookmark, Tag];

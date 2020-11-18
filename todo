@@ -7,4 +7,7 @@
 - OK - deploy this on EC2/Heroku
 - OK - modularity of the graphql files
 - create seeders 
-- 
+- Google / Apple login
+- Forget password
+- Tracking query activity (store history)
+- error messsages

@@ -4,6 +4,7 @@ const jwt = require("express-jwt");
 const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
 const JWT_SECRET = require("./constants");
+const CheckOwnerDirective = require('./directives')
 
 const app = express();
 const auth = jwt({
@@ -11,11 +12,20 @@ const auth = jwt({
     credentialsRequired: false,
     algorithms: ['sha1', 'RS256', 'HS256'],
 });
-app.use(auth);
+app.use(auth, function (err, req, res, next) {
+    console.log(err)
+    if (err.code) {
+        return res.status(401).send(err);
+    }
+    return next();
+  });
 
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    schemaDirectives: {
+      checkOwner: CheckOwnerDirective
+    },
     introspection: true,
     playground: true,
     playground: {
@@ -34,6 +44,6 @@ const server = new ApolloServer({
 server.applyMiddleware({ app });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log("The server started on port " + PORT);
 });
