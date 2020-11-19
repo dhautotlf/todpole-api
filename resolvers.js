@@ -45,8 +45,7 @@ const resolvers = {
             name,
             ageMin,
             ageMax,
-            timingMin,
-            timingMax,
+            timing,
             description,
             url,
             activityImageList,
@@ -59,8 +58,7 @@ const resolvers = {
                 name,
                 ageMin,
                 ageMax,
-                timingMin,
-                timingMax,
+                timing,
                 description,
                 url
             });

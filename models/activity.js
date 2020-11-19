@@ -52,8 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     ageMin: DataTypes.INTEGER,
     ageMax: DataTypes.INTEGER,
-    timingMin: DataTypes.INTEGER,
-    timingMax: DataTypes.INTEGER,
+    timing: DataTypes.INTEGER,
     description: DataTypes.TEXT,
     url: DataTypes.TEXT
   }, {

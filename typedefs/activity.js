@@ -4,8 +4,7 @@ input ActivityInput {
     name: String!
     ageMin: Int!
     ageMax: Int!
-    timingMin: Int!
-    timingMax: Int!
+    timing: Int!
     description: String!
     url: String
     activityImageList: [ActivityImageInput]
@@ -27,8 +26,7 @@ type Activity {
     name: String!
     ageMin: Int!
     ageMax: Int!
-    timingMin: Int!
-    timingMax: Int!
+    timing: Int!
     description: String!
     url: String
     reviewList: [Review]
