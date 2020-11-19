@@ -1,7 +1,7 @@
 const { User, HasFamiliyUser, Activity, Review, ActivityImage, Bookmark, Tag, ActivityTag } = require("./models");
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
-
+const {Op} = require('sequelize');
 const JWT_SECRET = require("./constants");
 const review = require("./models/review");
 const tag = require("./models/tag");
@@ -37,8 +37,14 @@ const resolvers = {
         },
         myBookmarks: async (_, args, { user }) =>
             Bookmark.findAll({ where: { userId: user.id }, include: ['activity'] })
+        ,
+        searchTags: async (_, {text}) => {
+            if(!text) {
+                return Tag.findAll()
+            }
+            return Tag.findAll({ where: { text: { [Op.like]: `%${text}%` }}})
+        }
     },
-
     Mutation: {
         async createActivity(_, { activityInput: {
             category,

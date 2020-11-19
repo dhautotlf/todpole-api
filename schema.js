@@ -13,6 +13,7 @@ const typeDefs = gql`
         activity(id: Int!): Activity
         myReviews: [Review]
         myBookmarks: [Bookmark]
+        searchTags(text: String): [Tag]
     }
 
     type Mutation {
