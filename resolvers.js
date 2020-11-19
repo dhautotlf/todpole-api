@@ -64,31 +64,32 @@ const resolvers = {
                 description,
                 url
             });
-
-            const images = await Promise.all(activityImageList.map((i, index) => ActivityImage.create({
-                activityId: activity.id,
-                url: i.url,
-                isMain: index === 0
-            })));
-
-            const tags = await Promise.all(tagList.map(t => Tag. findCreateFind(
-                {
-                    where: { text: t.text }
+            if(activityImageList) {
+                const images = await Promise.all(activityImageList.map((i, index) => ActivityImage.create({
+                    activityId: activity.id,
+                    url: i.url,
+                    isMain: index === 0
                 })));
-
-            await Promise.all(tags.map(t => {
-                ActivityTag. findCreateFind(
+                activity.activityImageList = images;
+            }
+            
+            if(tagList) {
+                const tags = await Promise.all(tagList.map(t => Tag. findCreateFind(
                     {
-                        where: {
-                            ActivityId: activity.id,
-                            TagId: t[0].dataValues.id
-                        }
-                    })
-            }));
-
-            activity.activityImageList = images;
-            activity.tagList = tagList;
-
+                        where: { text: t.text }
+                    })));
+                
+                await Promise.all(tags.map(t => {
+                    ActivityTag.findCreateFind(
+                        {
+                            where: {
+                                ActivityId: activity.id,
+                                TagId: t[0].dataValues.id
+                            }
+                        })
+                }));
+                activity.tagList = tagList;
+            }
 
             return activity;
         },
