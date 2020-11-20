@@ -1,7 +1,5 @@
-'use strict';
-
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface) => {
     /**
      * Add altering commands here.
      *
@@ -9,7 +7,7 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     await queryInterface.renameColumn('activities', 'timingmin', 'timing');
-    await queryInterface.removeColumn('activities', 'timingmax')
+    await queryInterface.removeColumn('activities', 'timingmax');
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -19,7 +17,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.addColumn('activities', 'timingmax', Sequelize.INTEGER)
+    await queryInterface.addColumn('activities', 'timingmax', Sequelize.INTEGER);
     await queryInterface.renameColumn('activities', 'timing', 'timingmin');
-  }
+  },
 };

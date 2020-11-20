@@ -9,6 +9,7 @@ input ActivityInput {
     url: String
     activityImageList: [ActivityImageInput]
     tagList: [TagInput]
+    materialList: [MaterialInput]
 }
 
 enum ActivityCategory {
@@ -33,6 +34,7 @@ type Activity {
     activityImageList: [ActivityImage]
     tagList: [Tag]
     user: User!
+    materialList: [Material]
 }
 `;
 

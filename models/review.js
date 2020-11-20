@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Review extends Model {
     /**
@@ -12,19 +12,19 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Review.belongsTo(models.User, {
         foreignKey: 'userId',
-        onDelete: 'CASCADE'
-      })
+        onDelete: 'CASCADE',
+      });
       Review.belongsTo(models.Activity, {
         foreignKey: 'activityId',
-        onDelete: 'CASCADE'
-      })
+        onDelete: 'CASCADE',
+      });
     }
-  };
+  }
   Review.init({
     userId: DataTypes.INTEGER,
     activityId: DataTypes.INTEGER,
     rating: DataTypes.INTEGER,
-    text: DataTypes.STRING
+    text: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Review',

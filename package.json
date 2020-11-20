@@ -8,7 +8,10 @@
     "start": "node index.js",
     "migrate-up": "sequelize db:migrate",
     "migrate-undo": "sequelize db:migrate:undo",
-    "heroku-postbuild": "sequelize db:migrate"
+    "heroku-postbuild": "sequelize db:migrate",
+    "dev": "nodemon index.js",
+    "lint:fix": "eslint . --fix",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
@@ -24,5 +27,13 @@
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.13.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^2.7.0",
+    "nodemon": "^2.0.6"
   }
 }

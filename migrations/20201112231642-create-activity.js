@@ -1,6 +1,4 @@
-'use strict';
-
-/* 
+/*
 imageList (jsonb)
 name (text)
 category [PHYSICAL, COGNITIVE, SPEECH, SOCIAL_EMOTION, SELF_CARE] enum
@@ -22,7 +20,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -31,48 +29,48 @@ module.exports = {
           model: 'Users',
           key: 'id',
           as: 'userId',
-        }
+        },
       },
       category: {
         type: Sequelize.ENUM,
         values: [
           'PHYSICAL', 'COGNITIVE', 'SPEECH', 'SOCIAL_EMOTION', 'SELF_CARE',
-        ]
+        ],
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       ageMin: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       ageMax: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       timingMin: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       timingMax: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       description: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       url: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       // Material is missing
     });
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.dropTable('Activities');
     await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_Activities_category";');
-  }
+  },
 };

@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -12,10 +12,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       User.hasMany(models.Activity, {
         foreignKey: 'userId',
-      })
+      });
       User.hasMany(models.Bookmark, {
         foreignKey: 'userId',
-      })
+      });
       /* User.belongsToMany(models.HasFamiliyUser, {
         foreignKey: 'userId',
         onDelete: 'CASCADE'
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE'
       }) */
     }
-  };
+  }
   User.init({
     id: {
       type: DataTypes.INTEGER,
@@ -40,20 +40,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM,
       values: ['MALE',
         'FEMALE',
-        'UNSPECIFIED']
+        'UNSPECIFIED'],
     },
     type: {
       type: DataTypes.ENUM,
       values: [
         'TODDLER',
         'USER',
-      ]
+      ],
     },
     password: DataTypes.STRING,
-    type: DataTypes.STRING,
   }, {
     sequelize,
-    modelName: 'User'
+    modelName: 'User',
   });
   return User;
 };

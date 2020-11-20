@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Bookmark extends Model {
     /**
@@ -12,18 +12,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Bookmark.belongsTo(models.User, {
         foreignKey: 'userId',
-        onDelete: 'CASCADE'
-      })
+        onDelete: 'CASCADE',
+      });
       Bookmark.belongsTo(models.Activity, {
         foreignKey: 'activityId',
         onDelete: 'CASCADE',
-        as: 'activity'
-      })
+        as: 'activity',
+      });
     }
-  };
+  }
   Bookmark.init({
     userId: DataTypes.INTEGER,
-    activityId: DataTypes.INTEGER
+    activityId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Bookmark',

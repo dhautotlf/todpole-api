@@ -1,6 +1,6 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('ActivityTags', {
+    await queryInterface.createTable('ActivityMaterials', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,19 +9,9 @@ module.exports = {
       },
       activityId: {
         type: Sequelize.INTEGER,
-        references: {
-          model: 'Activities',
-          key: 'id',
-          as: 'activityId',
-        },
       },
-      tagId: {
+      materialId: {
         type: Sequelize.INTEGER,
-        references: {
-          model: 'Tags',
-          key: 'id',
-          as: 'tagId',
-        },
       },
       createdAt: {
         allowNull: false,
@@ -34,13 +24,13 @@ module.exports = {
     }, {
       uniqueKeys: {
         Items_unique: {
-          fields: ['tagId', 'activityId'],
+          fields: ['materialId', 'activityId'],
           unique: true,
         },
       },
     });
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('ActivityTags');
+    await queryInterface.dropTable('ActivityMaterials');
   },
 };

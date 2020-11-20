@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Activity extends Model {
     /**
@@ -14,27 +14,34 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         onDelete: 'CASCADE',
         as: 'user',
-      })
+      });
       Activity.hasMany(models.Review, {
         foreignKey: 'activityId',
-        as: 'reviewList'
-      })
+        as: 'reviewList',
+      });
       Activity.hasMany(models.ActivityImage, {
         foreignKey: 'activityId',
-        as: 'activityImageList'
-      })
+        as: 'activityImageList',
+      });
       Activity.hasMany(models.Bookmark, {
         foreignKey: 'userId',
-      })
+      });
       Activity.belongsToMany(
         models.Tag,
         {
           through: models.ActivityTag,
-          as:'tagList'
-        }
-      )
+          as: 'tagList',
+        },
+      );
+      Activity.belongsToMany(
+        models.Material,
+        {
+          through: models.ActivityMaterial,
+          as: 'materialList',
+        },
+      );
     }
-  };
+  }
 
   Activity.init({
     id: {
@@ -47,14 +54,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     category: {
       type: DataTypes.ENUM,
-      values: ['PHYSICAL', 'COGNITIVE', 'SPEECH', 'SOCIAL_EMOTION', 'SELF_CARE']
+      values: ['PHYSICAL', 'COGNITIVE', 'SPEECH', 'SOCIAL_EMOTION', 'SELF_CARE'],
     },
     name: DataTypes.STRING,
     ageMin: DataTypes.INTEGER,
     ageMax: DataTypes.INTEGER,
     timing: DataTypes.INTEGER,
     description: DataTypes.TEXT,
-    url: DataTypes.TEXT
+    url: DataTypes.TEXT,
   }, {
     sequelize,
     modelName: 'Activity',

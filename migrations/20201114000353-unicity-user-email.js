@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.changeColumn('Users', 'login', {
@@ -12,5 +10,5 @@ module.exports = {
     await queryInterface.changeColumn('Users', 'login', {
       type: Sequelize.STRING,
     });
-  }
+  },
 };

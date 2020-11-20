@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class HasFamiliyUser extends Model {
     /**
@@ -12,17 +12,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       HasFamiliyUser.belongsTo(models.User, {
         foreignKey: 'userId',
-        onDelete: 'CASCADE'
-      })
+        onDelete: 'CASCADE',
+      });
       HasFamiliyUser.belongsTo(models.User, {
         foreignKey: 'familiyMemberId',
-        onDelete: 'CASCADE'
-      })
+        onDelete: 'CASCADE',
+      });
     }
-  };
+  }
   HasFamiliyUser.init({
     userId: DataTypes.INTEGER,
-    familiyMemberId: DataTypes.INTEGER
+    familiyMemberId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'HasFamiliyUser',

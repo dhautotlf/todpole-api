@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class ActivityImage extends Model {
     /**
@@ -12,14 +12,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       ActivityImage.belongsTo(models.Activity, {
         foreignKey: 'activityId',
-        onDelete: 'CASCADE'
-      })
+        onDelete: 'CASCADE',
+      });
     }
-  };
+  }
   ActivityImage.init({
     activityId: DataTypes.INTEGER,
     url: DataTypes.STRING,
-    isMain: DataTypes.BOOLEAN
+    isMain: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'ActivityImage',

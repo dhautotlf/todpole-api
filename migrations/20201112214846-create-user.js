@@ -1,5 +1,3 @@
-'use strict';
-
 /*
 User creation - User
 id
@@ -21,34 +19,34 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       login: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       photo: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       birthDate: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       gender: {
         type: Sequelize.ENUM,
         values: [
           'MALE',
           'FEMALE',
-          'UNSPECIFIED'
+          'UNSPECIFIED',
         ],
-        defaultValue: 'MALE'
+        defaultValue: 'MALE',
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       password: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       type: {
         type: Sequelize.ENUM,
@@ -56,21 +54,21 @@ module.exports = {
           'TODDLER',
           'USER',
         ],
-        defaultValue: 'USER'
+        defaultValue: 'USER',
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.dropTable('Users');
     await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_Users_type";');
     await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_Users_gender";');
-  }
+  },
 };

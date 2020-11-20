@@ -1,10 +1,11 @@
-const { gql } = require("apollo-server-express");
+const { gql } = require('apollo-server-express');
 const User = require('./typedefs/user');
 const Activity = require('./typedefs/activity');
 const Review = require('./typedefs/review');
 const ActivityImage = require('./typedefs/activityImage');
 const Bookmark = require('./typedefs/bookmark');
 const Tag = require('./typedefs/tag');
+const Material = require('./typedefs/material');
 
 const typeDefs = gql`
     type Query {
@@ -14,6 +15,7 @@ const typeDefs = gql`
         myReviews: [Review]
         myBookmarks: [Bookmark]
         searchTags(text: String): [Tag]
+        searchMaterials(name: String): [Material]
     }
 
     type Mutation {
@@ -25,4 +27,4 @@ const typeDefs = gql`
     }
 `;
 
-module.exports = [typeDefs, User, Activity, Review, ActivityImage, Bookmark, Tag];
+module.exports = [typeDefs, User, Activity, Review, ActivityImage, Bookmark, Tag, Material];
