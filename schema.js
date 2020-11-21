@@ -24,6 +24,7 @@ const typeDefs = gql`
         createActivity(activityInput: ActivityInput!): Activity
         createReview(reviewInput: ReviewInput!): Review
         createBookmark(bookmarkInput: BookmarkInput!): Bookmark
+        deleteBookmark(id: Int!): Int
     }
 `;
 
