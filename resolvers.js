@@ -80,6 +80,7 @@ const resolvers = {
         activityImageList,
         tagList,
         materialList,
+        review,
       },
     }, { user }) {
       const activity = await Activity.create({
@@ -92,6 +93,15 @@ const resolvers = {
         description,
         url,
       });
+      const activityId = activity.id;
+
+      if (review) {
+        const createdReview = await resolvers.Mutation.createReview(null, { reviewInput: { ...review, activityId } },
+          { user });
+
+        activity.reviewList = [createdReview];
+      }
+
       if (activityImageList) {
         const images = await Promise.all(activityImageList.map((i, index) => ActivityImage.create({
           activityId: activity.id,

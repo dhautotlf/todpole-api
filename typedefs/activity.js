@@ -10,6 +10,7 @@ input ActivityInput {
     activityImageList: [ActivityImageInput]
     tagList: [TagInput]
     materialList: [MaterialInput]
+    review: ReviewInput2
 }
 
 enum ActivityCategory {

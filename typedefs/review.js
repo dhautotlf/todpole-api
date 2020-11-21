@@ -5,6 +5,11 @@ input ReviewInput {
     text: String
 }
 
+input ReviewInput2 {
+    rating: Int!
+    text: String
+}
+
 type Review {
     id: Int!
     userId: Int!
