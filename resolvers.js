@@ -179,7 +179,9 @@ const resolvers = {
       const toDelete = await Bookmark.findOne({
         where: { id, userId: user.id },
       });
-      return await toDelete.destroy();
+      return await Bookmark.destroy({
+           where: { id, userId: user.id },
+      })
     },
     async register(_, {
       login,
