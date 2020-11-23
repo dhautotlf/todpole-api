@@ -36,6 +36,7 @@ type Activity {
     tagList: [Tag]
     user: User!
     materialList: [Material]
+    averageRating: Float!
 }
 `;
 

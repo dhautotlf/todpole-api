@@ -62,9 +62,11 @@ module.exports = (sequelize, DataTypes) => {
     timing: DataTypes.INTEGER,
     description: DataTypes.TEXT,
     url: DataTypes.TEXT,
+    averageRating: DataTypes.NUMERIC,
   }, {
     sequelize,
     modelName: 'Activity',
+    ageMin: DataTypes.INTEGER,
   });
   return Activity;
 };

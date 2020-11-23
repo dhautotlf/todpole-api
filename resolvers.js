@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
-const { Op } = require('sequelize');
+const {
+  Op, fn, col, where,
+} = require('sequelize');
 const {
   User,
   HasFamiliyUser,
@@ -14,6 +16,7 @@ const {
   ActivityMaterial,
 } = require('./models');
 const JWT_SECRET = require('./constants');
+const { updateAverageRating } = require('./utils/review');
 
 const resolvers = {
   Query: {
@@ -48,6 +51,7 @@ const resolvers = {
         where: { id: args.id },
         include: ['reviewList', 'activityImageList', 'tagList', 'user', 'materialList'],
       });
+
       return activity;
     },
     async myReviews(_, __, { user }) {
@@ -96,8 +100,13 @@ const resolvers = {
       const activityId = activity.id;
 
       if (review) {
-        const createdReview = await resolvers.Mutation.createReview(null, { reviewInput: { ...review, activityId } },
-          { user });
+        const createdReview = await resolvers.Mutation.createReview(null, {
+          reviewInput: {
+            ...review,
+            activityId,
+          },
+        },
+        { user });
 
         activity.reviewList = [createdReview];
       }
@@ -156,12 +165,17 @@ const resolvers = {
         text,
       },
     }, { user }) {
-      return Review.create({
+      const createdReview = await Review.create({
         userId: user.id,
         activityId,
         rating,
         text,
       });
+
+      // Asynchronously update the averageRating of the activity
+      updateAverageRating(activityId);
+
+      return createdReview;
     },
     async createBookmark(_, {
       bookmarkInput: {
