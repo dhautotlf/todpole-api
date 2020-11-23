@@ -7,7 +7,7 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     await queryInterface.addColumn('activities', 'averageRating', {
-      type: Sequelize.NUMERIC,
+      type: Sequelize.NUMERIC(10, 1),
       defaultValue: 0,
     });
   },
