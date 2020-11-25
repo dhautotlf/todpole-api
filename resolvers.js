@@ -116,7 +116,13 @@ const resolvers = {
         url,
         averageRating: 0,
       });
+
       const activityId = activity.id;
+      activity.user = await User.findOne({
+        where: {
+          id: user.id,
+        },
+      });
 
       if (review) {
         const createdReview = await resolvers.Mutation.createReview(null, {
