@@ -66,7 +66,7 @@ const resolvers = {
           'materialList',
           'user'],
       });
-      console.log(activity.reviewList[0]);
+
       return activity;
     },
     async myReviews(_, __, { user }) {
@@ -114,6 +114,7 @@ const resolvers = {
         timing,
         description,
         url,
+        averageRating: 0,
       });
       const activityId = activity.id;
 
