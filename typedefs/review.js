@@ -16,6 +16,7 @@ type Review {
     activityId: Int!
     rating: Int!
     text: String
+    user: User
 }
 `;
 

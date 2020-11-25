@@ -13,7 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       Review.belongsTo(models.User, {
         foreignKey: 'userId',
         onDelete: 'CASCADE',
+        as: 'user',
       });
+
       Review.belongsTo(models.Activity, {
         foreignKey: 'activityId',
         onDelete: 'CASCADE',

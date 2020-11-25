@@ -44,18 +44,36 @@ const resolvers = {
         throw new Error("Sorry, you're not an authenticated user!");
       }
 
-      return Activity.findAll({ include: ['reviewList', 'activityImageList', 'tagList', 'materialList', 'user'] });
+      const activities = await Activity.findAll({
+        include: [
+          { model: Review, as: 'reviewList', include: ['user'] },
+          'activityImageList',
+          'tagList',
+          'materialList',
+          'user',
+        ],
+      });
+
+      return activities;
     },
     async activity(_, args) {
       const activity = await Activity.findOne({
         where: { id: args.id },
-        include: ['reviewList', 'activityImageList', 'tagList', 'user', 'materialList'],
+        include: [
+          { model: Review, as: 'reviewList', include: ['user'] },
+          'activityImageList',
+          'tagList',
+          'materialList',
+          'user'],
       });
-
+      console.log(activity.reviewList[0]);
       return activity;
     },
     async myReviews(_, __, { user }) {
-      return Review.findAll({ where: { userId: user.id } });
+      return Review.findAll({
+        where: { userId: user.id },
+        include: ['user'],
+      });
     },
     myBookmarks: async (_, __, { user }) => Bookmark.findAll({ where: { userId: user.id }, include: ['activity'] }),
     searchTags: async (_, { text }) => {
@@ -190,12 +208,9 @@ const resolvers = {
       return Bookmark.findOne({ where: { id: created.id }, include: ['activity'] });
     },
     async deleteBookmark(_, { id }, { user }) {
-      const toDelete = await Bookmark.findOne({
+      return Bookmark.destroy({
         where: { id, userId: user.id },
       });
-      return await Bookmark.destroy({
-           where: { id, userId: user.id },
-      })
     },
     async register(_, {
       login,
