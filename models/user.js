@@ -50,6 +50,14 @@ module.exports = (sequelize, DataTypes) => {
       ],
     },
     password: DataTypes.STRING,
+    status: {
+      type: DataTypes.ENUM,
+      values: [
+        'ACTIVATION_PENDING',
+        'ACTIVE',
+        'DISABLED',
+      ],
+    },
   }, {
     sequelize,
     modelName: 'User',

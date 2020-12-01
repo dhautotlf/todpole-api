@@ -12,6 +12,12 @@ enum UserType {
     USER
 }
 
+enum UserStatus {
+    ACTIVATION_PENDING
+    ACTIVE
+    DISABLED
+}
+
 input UserInput {
     login: String
     photo: String
@@ -33,6 +39,7 @@ type User {
     type: String @checkOwner
     toddlerList: [User] @checkOwner
     bookmarkList: [Activity] @checkOwner
+    status: UserStatus
 }
 `;
 

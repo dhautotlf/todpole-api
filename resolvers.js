@@ -243,6 +243,7 @@ const resolvers = {
         birthDate,
         gender,
         type,
+        status: 'ACTIVATION_PENDING',
       });
 
       const results = await Promise.all(toddlerList.map((toddler) => User.create({ ...toddler, type: 'TODDLER' })));
