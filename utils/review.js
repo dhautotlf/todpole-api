@@ -20,7 +20,12 @@ const updateAverageRating = async (activityId) => {
     raw: true,
   });
 
-  if (!averageRating || !averageRating.length || !averageRating[0]) {
+  if (
+    !averageRating
+    || !averageRating.length
+    || !averageRating[0]
+    || !averageRating[0].averagerating
+  ) {
     return 0;
   }
 
