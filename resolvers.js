@@ -200,7 +200,12 @@ const resolvers = {
       // Asynchronously update the averageRating of the activity
       updateAverageRating(activityId);
 
-      return createdReview;
+      return Review.findOne({
+        where: {
+          id: createdReview.id,
+        },
+        include: ['user'],
+      });
     },
     async createBookmark(_, {
       bookmarkInput: {

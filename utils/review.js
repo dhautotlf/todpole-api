@@ -12,7 +12,7 @@ const updateAverageRating = async (activityId) => {
   const averageRating = await Review.findAll({
     attributes: [[fn('avg', col('rating')), 'averageRating']],
     where: {
-      activity,
+      activityId,
       userId: {
         [Op.not]: userId,
       },
