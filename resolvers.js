@@ -15,8 +15,9 @@ const {
   Material,
   ActivityMaterial,
 } = require('./models');
-const JWT_SECRET = require('./constants');
+const { JWT_SECRET, ACTIVATION_JWT_SECRET } = require('./constants');
 const { updateAverageRating } = require('./utils/review');
+const { sendAccountActivateEmail } = require('./emails');
 
 const resolvers = {
   Query: {
@@ -249,6 +250,13 @@ const resolvers = {
         userId: user.id,
         familiyMemberId: i,
       })));
+
+      // TODO: Generate the activation token and save it in database
+      const activationToken = jsonwebtoken.sign({ id: user.id }, ACTIVATION_JWT_SECRET, {
+        expiresIn: '1d',
+      });
+      // Asynchronously send the user activation email
+      sendAccountActivateEmail(user, activationToken);
 
       return jsonwebtoken.sign({ id: user.id, login: user.login }, JWT_SECRET, {
         expiresIn: '1d',

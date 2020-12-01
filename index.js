@@ -3,8 +3,9 @@ const { ApolloServer } = require('apollo-server-express');
 const jwt = require('express-jwt');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
-const JWT_SECRET = require('./constants');
+const { JWT_SECRET } = require('./constants');
 const CheckOwnerDirective = require('./directives');
+const { activate: activateHandler } = require('./static/handlers');
 
 const app = express();
 const auth = jwt({
@@ -18,6 +19,9 @@ app.use(auth, (err, req, res, next) => {
   }
   return next();
 });
+
+// Public GET endpoint handling user account activation
+app.get('/activate', activateHandler);
 
 const server = new ApolloServer({
   typeDefs,
