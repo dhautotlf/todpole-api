@@ -178,7 +178,8 @@ const resolvers = {
             },
           },
         )));
-        activity.materialList = materialList;
+
+        activity.materialList = materials.map((t) => t[0]);
       }
 
       return activity;
