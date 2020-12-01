@@ -15,8 +15,8 @@ const sendAccountActivateEmail = async ({ login, name }, activationToken) => {
     templateId: constants.templates.activateAccount,
     dynamicTemplateData: {
       name,
-      // activationUrl: 'http://www.todpole-app.com/activate?token=${activationToken}`,
-      activationUrl: `http://localhost:3000/activate?token=${activationToken}`,
+      activationUrl: `https://www.todpole-app.com/activate?token=${activationToken}`,
+      // activationUrl: `http://localhost:3000/activate?token=${activationToken}`,
     },
   };
   try {
