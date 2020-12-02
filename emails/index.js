@@ -10,7 +10,7 @@ const sendAccountActivateEmail = async ({ login, name }, activationToken) => {
   }
 
   const msg = {
-    to: 'hautot.d@gmail.com', // TODO change it to the real value
+    to: login, // TODO change it to the real value
     from: constants.verifiedSender, // Change to your verified sender
     templateId: constants.templates.activateAccount,
     dynamicTemplateData: {
