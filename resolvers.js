@@ -19,6 +19,12 @@ const { JWT_SECRET, ACTIVATION_JWT_SECRET } = require('./constants');
 const { updateAverageRating } = require('./utils/review');
 const { sendAccountActivateEmail } = require('./emails');
 
+const checkUser = (user) => {
+  if (!user) {
+    throw new Error("Sorry, you're not an authenticated user!");
+  }
+};
+
 const resolvers = {
   Query: {
     async current(_, __, { user }) {
@@ -41,9 +47,7 @@ const resolvers = {
       throw new Error("Sorry, you're not an authenticated user!");
     },
     async activities(_, __, { user }) {
-      if (!user) {
-        throw new Error("Sorry, you're not an authenticated user!");
-      }
+      checkUser(user);
 
       const activities = await Activity.findAll({
         include: [
@@ -57,7 +61,8 @@ const resolvers = {
 
       return activities;
     },
-    async activity(_, args) {
+    async activity(_, args, { user }) {
+      checkUser(user);
       const activity = await Activity.findOne({
         where: { id: args.id },
         include: [
@@ -71,19 +76,25 @@ const resolvers = {
       return activity;
     },
     async myReviews(_, __, { user }) {
+      checkUser(user);
       return Review.findAll({
         where: { userId: user.id },
         include: ['user'],
       });
     },
-    myBookmarks: async (_, __, { user }) => Bookmark.findAll({ where: { userId: user.id }, include: ['activity'] }),
-    searchTags: async (_, { text }) => {
+    myBookmarks: async (_, __, { user }) => {
+      checkUser(user);
+      return Bookmark.findAll({ where: { userId: user.id }, include: ['activity'] });
+    },
+    searchTags: async (_, { text }, { user }) => {
+      checkUser(user);
       if (!text) {
         return Tag.findAll();
       }
       return Tag.findAll({ where: { text: { [Op.like]: `%${text}%` } } });
     },
-    searchMaterials: async (_, { name }) => {
+    searchMaterials: async (_, { name }, { user }) => {
+      checkUser(user);
       if (!name) {
         return Material.findAll();
       }
@@ -106,6 +117,7 @@ const resolvers = {
         review,
       },
     }, { user }) {
+      checkUser(user);
       const activity = await Activity.create({
         userId: user.id,
         category,
@@ -191,6 +203,7 @@ const resolvers = {
         text,
       },
     }, { user }) {
+      checkUser(user);
       const createdReview = await Review.create({
         userId: user.id,
         activityId,
@@ -213,6 +226,7 @@ const resolvers = {
         activityId,
       },
     }, { user }) {
+      checkUser(user);
       const created = await Bookmark.create({
         userId: user.id,
         activityId,
@@ -221,6 +235,7 @@ const resolvers = {
       return Bookmark.findOne({ where: { id: created.id }, include: ['activity'] });
     },
     async deleteBookmark(_, { id }, { user }) {
+      checkUser(user);
       return Bookmark.destroy({
         where: { id, userId: user.id },
       });
@@ -282,6 +297,23 @@ const resolvers = {
       return jsonwebtoken.sign({ id: user.id, login: user.login }, JWT_SECRET, {
         expiresIn: '1d',
       });
+    },
+    async resetPassword(_, { newPassword }, { user }) {
+      checkUser(user);
+      await User.update({
+        password: await bcrypt.hash(newPassword, 10),
+      }, {
+        where: {
+          id: user.id,
+        },
+      });
+      return jsonwebtoken.sign({ id: user.id, login: user.login }, JWT_SECRET, {
+        expiresIn: '1d',
+      });
+    },
+    async requestResetPassword(_, __, { user }) {
+      checkUser(user);
+      return 'success';
     },
   },
 };

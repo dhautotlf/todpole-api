@@ -25,6 +25,8 @@ const typeDefs = gql`
         createReview(reviewInput: ReviewInput!): Review
         createBookmark(bookmarkInput: BookmarkInput!): Bookmark
         deleteBookmark(id: Int!): Int
+        resetPassword(newPassword: String!): String
+        requestResetPassword: String
     }
 `;
 
