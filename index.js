@@ -35,6 +35,11 @@ const server = new ApolloServer({
   playground: {
     endpoint: '/graphql',
   },
+  apollo: {
+    key: process.env.APOLLO_KEY,
+    graphVariant: process.env.ENV_LABEL,
+    reportSchema: true,
+  },
   plugins: [
     ApolloServerPluginUsageReporting({
       sendVariableValues: { exceptNames: ['login', 'password'] },
