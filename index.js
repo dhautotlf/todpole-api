@@ -1,6 +1,7 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const jwt = require('express-jwt');
+const { ApolloServerPluginUsageReporting } = require('apollo-server-core');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 const { JWT_SECRET } = require('./constants');
@@ -29,10 +30,16 @@ const server = new ApolloServer({
   schemaDirectives: {
     checkOwner: CheckOwnerDirective,
   },
+  reportSchema: true,
   introspection: true,
   playground: {
     endpoint: '/graphql',
   },
+  plugins: [
+    ApolloServerPluginUsageReporting({
+      sendVariableValues: { exceptNames: ['login', 'password'] },
+    }),
+  ],
   context: ({ req }) => {
     // eslint-disable-next-line
     const user = req.headers.user
