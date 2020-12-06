@@ -286,7 +286,7 @@ const resolvers = {
       sendAccountActivateEmail(user, activationToken);
 
       return jsonwebtoken.sign({ id: user.id, login: user.login }, JWT_SECRET, {
-        expiresIn: '1d',
+        expiresIn: '30d',
       });
     },
 
