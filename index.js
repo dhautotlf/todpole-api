@@ -6,7 +6,7 @@ const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 const { JWT_SECRET } = require('./constants');
 const CheckOwnerDirective = require('./directives');
-const { activate: activateHandler } = require('./static/handlers');
+const { activate: activateHandler, supportHandler, privacytHandler } = require('./static/handlers');
 
 const app = express();
 const auth = jwt({
@@ -21,6 +21,7 @@ app.use(auth, (err, req, res, next) => {
   return next();
 });
 
+app.use(express.static(`${__dirname}/static/html`));
 // Public GET endpoint handling user account activation
 app.get('/activate', activateHandler);
 
